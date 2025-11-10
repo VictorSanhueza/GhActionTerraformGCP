@@ -1,4 +1,4 @@
-project_id = "TU_PROJECT_ID"
+project_id = "optical-depth-472215-h9"
 region     = "us-central1"
 zone       = "us-central1-a"
 vm_name    = "demo-gha-tf-vm"
