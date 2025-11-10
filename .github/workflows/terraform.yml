@@ -2,8 +2,6 @@ name: Terraform Apply to GCP
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]  # cambia si usás otra rama
 
 jobs:
   terraform:
