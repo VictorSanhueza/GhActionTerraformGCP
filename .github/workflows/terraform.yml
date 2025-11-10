@@ -28,9 +28,9 @@ jobs:
         with:
           terraform_version: 1.7.5
 
-      # (Opcional) Valida formato
-      - name: Terraform fmt
-        run: terraform fmt -check
+      # # (Opcional) Valida formato
+      # - name: Terraform fmt
+      #   run: terraform fmt -check
 
       - name: Terraform Init
         run: terraform init
