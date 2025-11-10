@@ -16,7 +16,7 @@ provider "google" {
 
 terraform {
   backend "gcs" {
-    bucket = "optical-depth-472215-h9-tfstate"
+    bucket = "optical-depth-472215-h9-tfstate-tfstate"
     prefix = "terraform/state"
   }
 }
