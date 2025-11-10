@@ -5,6 +5,12 @@ resource "google_project_service" "compute" {
   disable_on_destroy = false
 }
 
+resource "google_storage_bucket" "tfstate" {
+  name          = "${var.project_id}-tfstate"
+  location      = var.region
+  force_destroy = true
+}
+
 # VM básica en la VPC default y subnet default
 resource "google_compute_instance" "vm" {
   name         = var.vm_name
