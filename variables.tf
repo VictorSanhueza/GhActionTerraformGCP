@@ -24,7 +24,7 @@ variable "vm_name" {
 variable "machine_type" {
   description = "Tipo de máquina"
   type        = string
-  default     = "e2-micro" # entra en free tier en varias regiones
+  default     = "e2-micro"
 }
 
 variable "service_account_email" {

@@ -1,24 +1,21 @@
-# Habilitamos las APIs necesarias (idempotente)
+# Habilitar API de Compute (idempotente)
 resource "google_project_service" "compute" {
-  project = var.project_id
-  service = "compute.googleapis.com"
-  disable_on_destroy = false
+  project             = var.project_id
+  service             = "compute.googleapis.com"
+  disable_on_destroy  = false
 }
 
-resource "google_storage_bucket" "tfstate" {
-  name          = "${var.project_id}-tfstate"
-  location      = var.region
-  force_destroy = true
-}
-
-# VM básica en la VPC default y subnet default
+# VM en tu VPC/subred
 resource "google_compute_instance" "vm" {
   name         = var.vm_name
   machine_type = var.machine_type
   zone         = var.zone
 
-  # Depende de tener la API compute habilitada
-  depends_on = [google_project_service.compute]
+  depends_on = [
+    google_project_service.compute,
+    google_compute_network.vpc,
+    google_compute_subnetwork.subnet
+  ]
 
   boot_disk {
     initialize_params {
@@ -28,19 +25,23 @@ resource "google_compute_instance" "vm" {
     }
   }
 
-network_interface {
-  subnetwork   = google_compute_subnetwork.subnet.id
-  access_config {} # para IP pública
-}
-
-
-  metadata = {
-    ssh-keys = "google-ssh" # placeholder; si querés usar OS Login, configurar aparte
+  network_interface {
+    network    = google_compute_network.vpc.id
+    subnetwork = google_compute_subnetwork.subnet.id
+    access_config {} # IP pública
   }
 
-  service_account {
-    email  = var.service_account_email != null ? var.service_account_email : null
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  metadata = {
+    # placeholder; si vas a usar OS Login, configurar aparte
+    ssh-keys = "google-ssh"
+  }
+
+  dynamic "service_account" {
+    for_each = var.service_account_email == null ? [] : [1]
+    content {
+      email  = var.service_account_email
+      scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    }
   }
 
   tags = ["http-server", "https-server"]

@@ -6,6 +6,11 @@ terraform {
       version = "~> 5.40"
     }
   }
+
+  backend "gcs" {
+    bucket = "optical-depth-472215-h9-tfstate"  # ya existe
+    prefix = "terraform/state"                  # “carpeta” lógica
+  }
 }
 
 provider "google" {
@@ -13,12 +18,3 @@ provider "google" {
   region  = var.region
   zone    = var.zone
 }
-
-terraform {
-  backend "gcs" {
-    bucket = "optical-depth-472215-h9-tfstate"
-    prefix = "state/dev"   # carpeta lógica dentro del bucket
-  }
-}
-
-
