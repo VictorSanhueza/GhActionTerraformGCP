@@ -1,3 +1,4 @@
+# Habilitamos las APIs necesarias (idempotente)
 resource "google_project_service" "compute" {
   project = var.project_id
   service = "compute.googleapis.com"
@@ -23,11 +24,11 @@ resource "google_compute_instance" "vm" {
 
   network_interface {
     network = "default"
-    access_config {}
+    access_config {} # para IP externa
   }
 
   metadata = {
-    ssh-keys = "google-ssh"
+    ssh-keys = "google-ssh" # placeholder; si querés usar OS Login, configurar aparte
   }
 
   service_account {
