@@ -26,15 +26,3 @@ resource "google_compute_firewall" "allow-ssh-icmp" {
   }
   source_ranges = ["0.0.0.0/0"]
 }
-
-# (Opcional) HTTP/HTTPS si pensás exponer web
-resource "google_compute_firewall" "allow-http-https" {
-  name    = "gha-allow-http-https"
-  network = google_compute_network.vpc.name
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80","443"]
-  }
-  source_ranges = ["0.0.0.0/0"]
-}
