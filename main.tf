@@ -20,7 +20,7 @@ resource "google_compute_instance" "vm" {
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-12"
-      size  = 10
+      size  = 20
       type  = "pd-balanced"
     }
   }
