@@ -22,10 +22,11 @@ resource "google_compute_instance" "vm" {
     }
   }
 
-  network_interface {
-    network = "default"
-    access_config {} # para IP externa
-  }
+network_interface {
+  subnetwork   = google_compute_subnetwork.subnet.id
+  access_config {} # para IP pública
+}
+
 
   metadata = {
     ssh-keys = "google-ssh" # placeholder; si querés usar OS Login, configurar aparte
