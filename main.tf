@@ -1,0 +1,39 @@
+resource "google_project_service" "compute" {
+  project = var.project_id
+  service = "compute.googleapis.com"
+  disable_on_destroy = false
+}
+
+# VM básica en la VPC default y subnet default
+resource "google_compute_instance" "vm" {
+  name         = var.vm_name
+  machine_type = var.machine_type
+  zone         = var.zone
+
+  # Depende de tener la API compute habilitada
+  depends_on = [google_project_service.compute]
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+      size  = 10
+      type  = "pd-balanced"
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {}
+  }
+
+  metadata = {
+    ssh-keys = "google-ssh"
+  }
+
+  service_account {
+    email  = var.service_account_email != null ? var.service_account_email : null
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+
+  tags = ["http-server", "https-server"]
+}
