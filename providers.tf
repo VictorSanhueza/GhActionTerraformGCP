@@ -17,7 +17,8 @@ provider "google" {
 terraform {
   backend "gcs" {
     bucket = "optical-depth-472215-h9-tfstate"
-    prefix = "terraform/state"
+    prefix = "state/dev"   # carpeta lógica dentro del bucket
   }
 }
+
 
